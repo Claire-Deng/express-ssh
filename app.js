@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var birds = require('./routes/birds')
 
 var app = express();
 
@@ -21,6 +22,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/birds', birds)
+
+//login请求
+var bodyParser = require('body-parser');/*post方法*/
+app.use(bodyParser.json());// 添加json解析
+app.use(bodyParser.urlencoded({extended: false}));
+
+var express = require('express');
+var router = express.Router();
+
+router.post('login', function(req, res, next) {
+    var emailAddress=req.body.emailAddress;//post专用
+    var password=req.body.password;
+      res.json({emailAddress, password});//数据返回前端
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
